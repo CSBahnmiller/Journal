@@ -8,3 +8,5 @@ DB_USER=**The login for your DB**
 DB_PASSWORD=**Your DB password for that login**
 DB_HOST=**The address your postgres DB is at**
 DB_PORT=**Default port is 5432, if not using default port change here**
+
+** if you don't know what your SECRET_KEY is use this command from terminal in the directory with manage.py: python manage.py shell -c 'from django.core.management import utils; print(utils.get_random_secret_key())'
