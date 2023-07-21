@@ -1,4 +1,4 @@
-▶️Install requirements, the command for that is pip install -r requirements.txt
+▶️Install requirements, the command for that is "pip install -r requirements.txt"
 ▶️Currently is setup with a Postgres Datase
 ▶️The Data base configs are using an alias file for it's connection, you will have to add a .env file that has this similar structure to connect to a postgress DB: 
 
