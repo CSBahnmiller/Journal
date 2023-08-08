@@ -1,24 +1,30 @@
-from time import localtime, strftime
 from django.db import models
+from django.contrib.auth.models import User
+
 
 # Create your models here.
 
-class User(models.Model):
-  fName = models.CharField(max_length=50)
-  lName = models.CharField(max_length=50)
-  userName = models.CharField(max_length=75)
-  password = models.CharField(max_length=100)
-  def __str__(self):
-    return self.userName
-  
 class UserContent(models.Model):
-  user = models.ForeignKey('User', on_delete=models.CASCADE, related_name="login")
-  mood = models.CharField(max_length=50)
-  feeling = models.IntegerField(default=10)
-  entryDateTime = models.CharField(max_length=100)
+  author = models.ForeignKey(User, on_delete=models.CASCADE)
+  title = models.CharField(max_length=200)
+  mood = models.CharField("Current Mood:", max_length=20, blank=False, choices=[
+    ('Happy 😃','Happy 😃'),
+    ('Peaceful 😃','Peaceful 😃'),
+    ("Sad 😢", "Sad 😢"),
+    ("Mad 😤", "Mad 😤"),
+    ("Anxious 😰", "Anxious 😰"),
+    ("Depressed 😓", "Depressed 😓"),
+    ("No Mood 😑","No Mood 😑"),
+    ("Angry 😤", "Angry 😤"),
+    ("Excited 😃", "Excited 😃"),
+    ("Silly 😋", "Silly 😋"),
+    ("curious","Curious 🦝"),
+    ("Insightful 🤔", "Insightful 🤔"),    
+    ], default="Happy 😃")
+  feeling = models.IntegerField("On a scale 1-10 how strong is your mood:",blank=False,choices=[tuple([x,x]) for x in range(1,11)], default=10)
+  created_at = models.DateTimeField(auto_now_add=True)
+  updated_at = models.DateTimeField(auto_now=True)
   content = models.TextField()
+
   def __str__(self):
-    return self.feeling
-  
-  def last_updated(self):
-    return(f'Last Updated: {strftime("%a, %d %b %Y %H:%M:%S", localtime())}')
+    return self.title + "\n" + self.content

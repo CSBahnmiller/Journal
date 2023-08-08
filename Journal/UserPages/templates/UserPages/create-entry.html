@@ -1,0 +1,9 @@
+{% extends 'UserPages/layout.html' %}
+{% block title %}Submit entry {% endblock %}
+{% load crispy_forms_tags %}
+{% block body %}
+<form method="post">
+{% csrf_token %}{{form|crispy}}
+<button type="submit" class="btn btn-success">Post</button>
+</form>
+{% endblock %}

@@ -1,0 +1,26 @@
+>>> from django.contrib.auth.models import Group, Permission, User
+>>> from django.contrib.contenttypes.models import ContentType
+>>> mod, created = Group.objects.get_or_create(name="mod")
+>>> mod
+<Group: mod>
+>>> created
+False
+>>> from UserPages.models import UserContent
+>>> ct = ContentType.objects.get_for_model(model=UserContent)
+>>> ct
+<ContentType: UserPages | user content>
+>>> perms = Permission.objects.filter(content_type=ct)
+>>> perms
+<QuerySet [<Permission: UserPages | user content | Can add user content>, <Permission: UserPages | user content | Can change user content>, <Permission: UserPages | user content | Can delete user content>, <Permission: UserPages | user content | Can view user content>]>
+>>> perms.all()
+<QuerySet [<Permission: UserPages | user content | Can add user content>, <Permission: UserPages | user content | Can change user content>, <Permission: UserPages | user content | Can delete user content>, <Permission: UserPages | user content | Can view user content>]>
+>>> mod.permissions.add(*perms)
+>>> mod
+<Group: mod>
+>>> mod.permissions
+<django.db.models.fields.related_descriptors.create_forward_many_to_many_manager.<locals>.ManyRelatedManager object at 0x000002314C29F550>
+>>> user = User.objects.filter(username="Harry")
+>>> user
+<QuerySet [<User: Harry>]>
+>>> mod.user_set.add(user.first())
+>>> quit()
