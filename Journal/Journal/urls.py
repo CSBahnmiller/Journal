@@ -23,3 +23,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 ]    
 
+handler403 = 'UserPages.views.custom_403'
+handler404 = 'UserPages.views.custom_404'

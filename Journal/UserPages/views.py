@@ -29,10 +29,38 @@ def index(request):
                     pass
                 try:
                     group = Group.objects.get(name='mod')
-                    group.user_set_add(user)
+                    group.user_set.remove(user)
                 except:
                     pass
     return render(request, 'UserPages/index.html', {'posts': posts})
+
+@login_required(login_url="../../UserPages/login")
+@permission_required("UserPages.delete_usercontent", login_url="../../UserPages/login", raise_exception=True)
+def mod(request):
+    posts = UserContent.objects.all()
+
+    if request.method == 'POST':
+        post_id = request.POST.get("post-id")
+        user_id = request.POST.get("user-id")
+        if post_id:
+            post = UserContent.objects.filter(id=post_id).first()
+            if post and (post.author == request.user or request.user.has_perm("UserPages.delete_usercontent")):
+                post.delete()
+        elif user_id:
+            user = User.objects.filter(id=user_id).first()
+            if user and request.user.is_staff:
+                try:
+                    group = Group.objects.get(name='default')
+                    group.user_set.remove(user)
+                except:
+                    pass
+                try:
+                    group = Group.objects.get(name='mod')
+                    group.user_set.remove(user)
+                except:
+                    pass
+    return render(request, 'UserPages/mod.html', {'posts': posts})
+
 
 def sign_up(request):
     if request.method == "POST":
@@ -65,6 +93,13 @@ def create_entry(request):
     else:
         form = UserContentForm()
     return render(request, 'UserPages/create-entry.html', {"form" : form})
+
+
+def custom_404(request, exception):
+    return render(request, 'UserPages/404.html', status=404)
+
+def custom_403(request, exception):
+    return render(request, 'UserPages/403.html', status=403)
 
 
 
