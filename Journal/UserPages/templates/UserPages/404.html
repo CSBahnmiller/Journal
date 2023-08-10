@@ -1,0 +1,24 @@
+
+{% extends 'UserPages/layout.html' %}
+{% load static %}
+{% block headtag %}
+<link type="text/css" rel="stylesheet" href="{% static 'UserPages/css/404.css' %}" />
+<link rel="icon" type="image/x-icon" href="{% static 'UserPages/images/tsParticles-64.png' %}">
+{% endblock %}
+{% block title_block%} 403 {% endblock %}
+
+{% block bodytag %}class = "permission_denied" {% endblock %}
+{% block body %}
+<div id="tsparticles"></div>
+<div class="denied__wrapper">
+    <h1>404</h1>
+    <h3>LOST IN <span>SPACE</span> Journalling? Hmm, looks like that page doesn't exist.</h3>
+    <img id="astronaut" src="{% static 'UserPages/images/astronaut.svg' %}" />
+    <img id="planet" src="{% static 'UserPages/images/planet.svg' %}" />
+    <a href="{% url 'UserPages:index' %}"><button class="denied__link">Go Home</button></a>
+</div>
+
+<script type="text/javascript"
+    src="https://cdn.jsdelivr.net/npm/tsparticles@2.3.4/tsparticles.bundle.min.js"></script>
+<script type="text/javascript" src="{% static 'UserPages/js/404.js' %}"></script>
+{% endblock%}

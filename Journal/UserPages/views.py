@@ -94,6 +94,8 @@ def create_entry(request):
         form = UserContentForm()
     return render(request, 'UserPages/create-entry.html', {"form" : form})
 
+def error404(request):
+    return render(request, 'UserPages/404.html')
 
 def custom_404(request, exception):
     return render(request, 'UserPages/404.html', status=404)
