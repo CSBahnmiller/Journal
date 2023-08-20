@@ -1,5 +1,23 @@
 {% extends 'UserPages/layout.html' %}
-{% block title_block%} 403 {% endblock %}
+{% load static %}
+{% block headtag %}
+<link type="text/css" rel="stylesheet" href="{% static 'UserPages/css/403.css' %}" />
+<link rel="icon" type="image/x-icon" href="{% static 'UserPages/images/spacebackground.jpg' %}">
+{% endblock %}
+{% block title_block%} 403 - Access denied {% endblock %}
+{% block bodytag %}style = 'background-image: url("{% static 'UserPages/images/spacebackground.jpg' %}");   background-repeat: no-repeat; 
+background-size: cover;'{% endblock %}
 {% block body %}
-you are here because you don't have the right permissions. Sucks to Suck.
+    <div class="d-flex justify-content-md-center align-items-center vh-100 ">
+      <div class="card ">
+        <div class="card-header text-dark bg-opacity-10">
+          Error 403 
+        </div>
+        <div class="card-body text-dark bg-opacity-10">
+          <h5 class="card-title">Permission Denied</h5>
+          <p class="card-text">You are here because you don't have the right permissions. <br> Sucks to Suck.</p>
+          <a href="{% url 'UserPages:index' %}" class="btn btn-primary">Return Home</a>
+        </div>
+      </div>
+
 {% endblock%}

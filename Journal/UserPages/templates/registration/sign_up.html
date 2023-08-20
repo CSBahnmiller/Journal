@@ -4,8 +4,8 @@
 {% block body %}
 <form method="post">
 {% csrf_token %}{{form|crispy}}
-<p>Don't have an account? Create one <a href="{% url 'UserPages:sign_up' %}">Here</a>!</p>
-<button type="submit" class="btn btn-success">Login</button>
+<p>Already have an account? Go <a href="{% url 'UserPages:login' %}">Here</a>!</p>
+<button type="submit" class="btn btn-success">Create Account</button>
 </form>
 
 {% endblock %}

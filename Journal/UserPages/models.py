@@ -18,13 +18,14 @@ class UserContent(models.Model):
     ("Angry 😤", "Angry 😤"),
     ("Excited 😃", "Excited 😃"),
     ("Silly 😋", "Silly 😋"),
-    ("curious","Curious 🦝"),
+    ("Curious 🦝","Curious 🦝"),
     ("Insightful 🤔", "Insightful 🤔"),    
     ], default="Happy 😃")
   feeling = models.IntegerField("On a scale 1-10 how strong is your mood:",blank=False,choices=[tuple([x,x]) for x in range(1,11)], default=10)
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
-  content = models.TextField()
+  graditude = models.TextField(blank=True)
+  content = models.TextField(blank=True)
 
   def __str__(self):
     return self.title + "\n" + self.content

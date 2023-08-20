@@ -1,0 +1,9 @@
+{% extends 'UserPages/layout.html' %}
+{% block title %}Edit Journal Entry {% endblock %}
+{% load crispy_forms_tags %}
+{% block body %}
+<form method="post">
+{% csrf_token %}{{form|crispy}}
+<button type="submit" class="btn btn-success">Update</button>
+</form>
+{% endblock %}
