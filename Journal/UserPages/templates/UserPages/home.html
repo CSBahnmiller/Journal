@@ -1,18 +1,37 @@
 
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+  Search
+  </button>
+  <ul class="dropdown-menu p-3 m-2" aria-labelledby="dropdownMenuButton1">
+  <li>
+
+    <form method="get">
+      {{postFilter.form}} <br><br>
+      <div class="form-row text-right">
+      <button class="btn btn-primary" type="submit">Search</button>
+
+  </li>
+  </ul>
+</div>
+
+
+
 
 
 {% for post in posts %}
 
 {% if user == post.author %}
+
 <div class="card mt-2">
   <div class="card-header"><strong>{{post.title}}</strong></div>
   <div class="card-body d-flex flex-row justify-content-between">
     <div>
       <h5 class="card-title"></h5>
       {% if post.graditude %}
-      <p>Being Greatful for: {{post.graditude}}</p>
+      <p><strong>Being Greatful for:</strong> {{post.graditude}}</p>
       {% endif %}
-      <p> {{post.content}}</p>
+      <p><strong>Journal Entry: </strong> {{post.content}}</p>
          
     </div>
     <div>
@@ -27,7 +46,7 @@
 
     </div>
   </div>
-  <div class="card-footer text-muted"><strong>@{{ post.author.username }}</strong> | Created: {{post.created_at}}  | feeling {{post.mood}}, {{post.feeling}} / 10</div>
+  <div class="card-footer text-muted"><strong><b>@{{ post.author.username }}</b></strong> | <b>Created:</b> {{post.created_at}} {% if post.updated_at %}| <b>Updated:</b> {{post.updated_at}}  {% endif %}| <b>Feeling:</b> {{post.mood}}, {{post.feeling}} / 10</div>
 </div>
 
 {% endif %}

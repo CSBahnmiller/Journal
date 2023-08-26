@@ -7,16 +7,30 @@
         <li class="nav-item"><a href="{% url 'UserPages:create-entry' %}" class="nav-link">Add Journal Entry</a></li>
         {% endif %}
         
-        {% if perms.UserPages.delete_usercontent %}
-        <li class="nav-item"><a href="{% url 'UserPages:mod' %}" class="nav-link">Moderate</a></li>
-        {% endif %}
+
       </ul>
     </div>
     <div>
       <ul class="navbar-nav">
         {% if user.is_authenticated %}
-        <span class="navbar-text">Logged in as {{user.username}} | </span>
-        <li class="nav-item"><a href="{% url 'UserPages:logout' %}" class="nav-link">Logout</a></li>
+       
+       
+
+  
+        
+        <div class="btn-group">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="defaultDropdown" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
+            Hello, {{user.username}}
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="defaultDropdown">
+            <li><a class="dropdown-item" href="{% url 'UserPages:logout' %}">Logout</a></li>
+            {% if perms.UserPages.delete_usercontent %}
+            <li><a class="dropdown-item" href="{% url 'UserPages:mod' %}">Moderate</a></li>
+            {% endif %}
+
+          </ul>
+        </div>
+
         {% else %}
         <li class="nav-item"><a href="{% url 'UserPages:login' %}" class="nav-link">Login</a></li>
         {% endif %}

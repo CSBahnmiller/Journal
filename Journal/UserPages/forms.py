@@ -36,3 +36,4 @@ class LoginForm(AuthenticationForm):
     class Meta:
         model = User
         feilds = ("username", "password")
+

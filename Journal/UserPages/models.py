@@ -29,3 +29,5 @@ class UserContent(models.Model):
 
   def __str__(self):
     return self.title + "\n" + self.content
+  
+  

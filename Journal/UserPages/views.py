@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 from .forms import RegisterForm, UserContentForm, PasswordChangingFrom, LoginForm
 from django.contrib.auth.models import User, Group
 from .models import UserContent
+from .filters import EntryFilter
 
 # Create your views here.
 
@@ -35,7 +36,11 @@ def index(request):
                     group.user_set.remove(user)
                 except:
                     pass
-    return render(request, 'UserPages/index.html', {'posts': posts})
+    postFilter = EntryFilter(request.GET, queryset=posts)
+    posts = postFilter.qs
+    
+    context = {'posts': posts, 'postFilter' : postFilter}
+    return render(request, 'UserPages/index.html', context)
 
 @login_required(login_url="../../UserPages/login")
 @permission_required("UserPages.delete_usercontent", login_url="../../UserPages/login", raise_exception=True)
@@ -62,7 +67,12 @@ def mod(request):
                     group.user_set.remove(user)
                 except:
                     pass
-    return render(request, 'UserPages/mod.html', {'posts': posts})
+    
+    postFilter = EntryFilter(request.GET, queryset=posts)
+    posts = postFilter.qs
+    
+    context = {'posts': posts, 'postFilter' : postFilter}
+    return render(request, 'UserPages/mod.html', context)
 
 
 def sign_up(request):
