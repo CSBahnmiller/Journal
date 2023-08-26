@@ -24,6 +24,7 @@
           </button>
           <ul class="dropdown-menu" aria-labelledby="defaultDropdown">
             <li><a class="dropdown-item" href="{% url 'UserPages:logout' %}">Logout</a></li>
+            <li><a class="dropdown-item" href="{% url 'UserPages:reset-password' %}">Password Reset</a></li>
             {% if perms.UserPages.delete_usercontent %}
             <li><a class="dropdown-item" href="{% url 'UserPages:mod' %}">Moderate</a></li>
             {% endif %}

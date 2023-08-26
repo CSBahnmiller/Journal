@@ -15,13 +15,28 @@
   </ul>
 </div>
 
+<div class="card">
+  <div class="card-header">
+  Inspirational  Quote<small> | generated at: <a href="https://zenquotes.io/api/random">zenquotes.io</a></small> 
+  </div>
+  <div class="card-body">
+    <blockquote class="blockquote mb-0">
+      <p>{{ quote }}</p>
+      <footer class="blockquote-footer"><cite title="Source Title">{{ author }}</cite></footer>
+      
+    </blockquote>
+  </div>
+</div>
+
+
+        
 
 
 
 
 {% for post in posts %}
 
-{% if user == post.author %}
+
 
 <div class="card mt-2">
   <div class="card-header"><strong>{{post.title}}</strong></div>
@@ -49,11 +64,30 @@
   <div class="card-footer text-muted"><strong><b>@{{ post.author.username }}</b></strong> | <b>Created:</b> {{post.created_at}} {% if post.updated_at %}| <b>Updated:</b> {{post.updated_at}}  {% endif %}| <b>Feeling:</b> {{post.mood}}, {{post.feeling}} / 10</div>
 </div>
 
-{% endif %}
+
 
 {% empty %}
 <p>No post Yet!</p>
 
 {% endfor %}
+
 <a href="{% url 'UserPages:create-entry' %}" class="btn btn-success m-2">Add Entry</a></li>
 
+
+<div class="pagination">
+  <span class="step-links">
+      {% if page_obj.has_previous %}
+          <a href="?page=1">&laquo; first</a>
+          <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+      {% endif %}
+
+      <span class="current">
+          Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+      </span>
+
+      {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}">next</a>
+          <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+      {% endif %}
+  </span>
+</div>

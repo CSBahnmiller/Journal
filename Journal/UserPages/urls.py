@@ -11,7 +11,7 @@ urlpatterns = [
     #path('login/', auth_views.LoginView.as_view(), name='login'),
     #path('password/', auth_views.PasswordChangeView.as_view(template_name="registration/change-password.html")),
     path("login/", views.Login_View.as_view(template_name="registration/login.html"), name = 'login'),
-    path('password/', views.PasswordsChangeView.as_view(template_name="registration/change-password.html")),
+    path('password/', views.PasswordsChangeView.as_view(template_name="registration/change-password.html"), name='reset-password'),
     path('password-success/', views.password_success, name = "password_success"),
     path('logout/', views.logout_request, name='logout'),
     path('sign-up/', views.sign_up, name = "sign_up"),

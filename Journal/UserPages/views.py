@@ -8,13 +8,49 @@ from .forms import RegisterForm, UserContentForm, PasswordChangingFrom, LoginFor
 from django.contrib.auth.models import User, Group
 from .models import UserContent
 from .filters import EntryFilter
+import requests
+
+
+#Import Pagination Stuff
+from django.core.paginator import Paginator
+
+
+#Code to grab API Quote
+
+def get_random_quote():
+    api_url = "https://zenquotes.io/api/random"
+    
+    try:
+        response = requests.get(api_url)
+        data = response.json()
+        
+        if data and isinstance(data, list):
+            quote_data = data[0]
+            quote = quote_data.get("q", "")
+            author = quote_data.get("a", "")
+            html_quote = quote_data.get("h", "")
+            
+            return {
+                "quote": quote,
+                "author": author,
+                "html_quote": html_quote
+            }
+            
+    except Exception as e:
+        print("An error occurred:", e)
+        return None
+
+
+
+
 
 # Create your views here.
 
 
 @login_required(login_url="../../UserPages/login/")
 def index(request):
-    posts = UserContent.objects.all()
+
+    posts = UserContent.objects.filter(author=request.user)
 
     if request.method == 'POST':
         post_id = request.POST.get("post-id")
@@ -38,8 +74,31 @@ def index(request):
                     pass
     postFilter = EntryFilter(request.GET, queryset=posts)
     posts = postFilter.qs
+
+    # Initialize the paginator
+    paginator = Paginator(posts, 5)  # Show 5 posts per page
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+#Adding API Quote
+    quote_data = get_random_quote()
+    context = {}
     
-    context = {'posts': posts, 'postFilter' : postFilter}
+    if quote_data:
+        quote = quote_data["quote"]
+        author = quote_data["author"]
+        html_quote = quote_data["html_quote"]
+        context["quote"] = quote
+        context["author"] = author
+        context["html_quote"] = html_quote
+
+
+#End of API Quote
+
+
+    
+    context.update({'posts': posts, 'postFilter': postFilter, 'page_obj': page_obj})
     return render(request, 'UserPages/index.html', context)
 
 @login_required(login_url="../../UserPages/login")
@@ -70,8 +129,14 @@ def mod(request):
     
     postFilter = EntryFilter(request.GET, queryset=posts)
     posts = postFilter.qs
+
+        # Initialize the paginator
+    paginator = Paginator(posts, 5)  # Show 5 posts per page
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     
-    context = {'posts': posts, 'postFilter' : postFilter}
+    context = {'posts': posts, 'postFilter' : postFilter, 'page_obj': page_obj }
     return render(request, 'UserPages/mod.html', context)
 
 
