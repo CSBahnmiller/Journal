@@ -20,13 +20,17 @@
         
         <div class="btn-group">
           <button class="btn btn-secondary dropdown-toggle" type="button" id="defaultDropdown" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
-            Hello, {{user.username}}
+            Hello, {% if user.first_name|length > 1 %}{{user.first_name}}{% else %}{{user.username}}{% endif %}
           </button>
           <ul class="dropdown-menu" aria-labelledby="defaultDropdown">
             <li><a class="dropdown-item" href="{% url 'UserPages:logout' %}">Logout</a></li>
             <li><a class="dropdown-item" href="{% url 'UserPages:reset-password' %}">Password Reset</a></li>
             {% if perms.UserPages.delete_usercontent %}
+            {% if request.path == '/UserPages/mod/' %}
+            <li><a class="dropdown-item" href="{% url 'UserPages:index' %}">Your Posts</a></li>
+            {% else %}
             <li><a class="dropdown-item" href="{% url 'UserPages:mod' %}">Moderate</a></li>
+            {% endif %}
             {% endif %}
 
           </ul>
@@ -40,3 +44,5 @@
     </div>
   </div>
 </nav>
+
+

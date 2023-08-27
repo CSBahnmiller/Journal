@@ -34,3 +34,13 @@ class EntryFilter(django_filters.FilterSet):
         fields='__all__'
         exclude = ['author', 'mood','feeling', 'title', 'content', 'created_at', 'updated_at', 'graditude']
 
+class ModEntryFilter(django_filters.FilterSet):
+    body_text = CharFilter(field_name="title", label='title', lookup_expr='icontains')
+    mood = MoodChoiceFilter()
+    feeling = FeelingChoiceFilter()
+    date_range = DateFromToRangeFilter(field_name="created_at", label = 'Published', widget=RangeWidget(attrs={'placeholder': 'MM/DD/YYYY'}))
+
+    class Meta:
+        model = UserContent
+        fields='__all__'
+        exclude = [ 'mood','feeling', 'title', 'content', 'created_at', 'updated_at', 'graditude']

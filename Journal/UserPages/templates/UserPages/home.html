@@ -15,7 +15,7 @@
   </ul>
 </div>
 
-<div class="card">
+<div class="card mt-2">
   <div class="card-header">
   Inspirational  Quote<small> | generated at: <a href="https://zenquotes.io/api/random">zenquotes.io</a></small> 
   </div>
@@ -27,10 +27,6 @@
     </blockquote>
   </div>
 </div>
-
-
-        
-
 
 
 
@@ -45,7 +41,9 @@
       <h5 class="card-title"></h5>
       {% if post.graditude %}
       <p><strong>Being Greatful for:</strong> {{post.graditude}}</p>
+      <hr>
       {% endif %}
+      
       <p><strong>Journal Entry: </strong> {{post.content}}</p>
          
     </div>
@@ -61,7 +59,7 @@
 
     </div>
   </div>
-  <div class="card-footer text-muted"><strong><b>@{{ post.author.username }}</b></strong> | <b>Created:</b> {{post.created_at}} {% if post.updated_at %}| <b>Updated:</b> {{post.updated_at}}  {% endif %}| <b>Feeling:</b> {{post.mood}}, {{post.feeling}} / 10</div>
+  <div class="card-footer text-muted"><strong><b>@{{ post.author.username }}</b></strong> | <b>Created:</b> {{post.created_at}} {% if post.updated_at != post.created_at %}| <b>Updated:</b> {{post.updated_at}}  {% endif %}| <b>Feeling:</b> {{post.mood}}, {{post.feeling}} / 10</div>
 </div>
 
 

@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from .forms import RegisterForm, UserContentForm, PasswordChangingFrom, LoginForm
 from django.contrib.auth.models import User, Group
 from .models import UserContent
-from .filters import EntryFilter
+from .filters import EntryFilter, ModEntryFilter
 import requests
 
 
@@ -76,7 +76,7 @@ def index(request):
     posts = postFilter.qs
 
     # Initialize the paginator
-    paginator = Paginator(posts, 5)  # Show 5 posts per page
+    paginator = Paginator(posts, 3)  # Show 3 posts per page
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -95,9 +95,6 @@ def index(request):
 
 
 #End of API Quote
-
-
-    
     context.update({'posts': posts, 'postFilter': postFilter, 'page_obj': page_obj})
     return render(request, 'UserPages/index.html', context)
 
@@ -127,17 +124,19 @@ def mod(request):
                 except:
                     pass
     
-    postFilter = EntryFilter(request.GET, queryset=posts)
+    postFilter = ModEntryFilter(request.GET, queryset=posts)
     posts = postFilter.qs
 
         # Initialize the paginator
-    paginator = Paginator(posts, 5)  # Show 5 posts per page
+    paginator = Paginator(posts, 2)  # Show 3 posts per page
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
     context = {'posts': posts, 'postFilter' : postFilter, 'page_obj': page_obj }
     return render(request, 'UserPages/mod.html', context)
+
+
 
 
 def sign_up(request):
