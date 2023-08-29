@@ -1,21 +1,21 @@
-
-{% extends 'UserPages/layout.html' %}
+{% extends 'UserPages/layout2.html' %}
 {% load static %}
 {% block headtag %}
 <link type="text/css" rel="stylesheet" href="{% static 'UserPages/css/404.css' %}" />
 <link rel="icon" type="image/x-icon" href="{% static 'UserPages/images/tsParticles-64.png' %}">
 {% endblock %}
-{% block title_block%} 403 {% endblock %}
+{% block title_block%} 404 {% endblock %}
 
 {% block bodytag %}class = "permission_denied" {% endblock %}
 {% block body %}
 <div id="tsparticles"></div>
 <div class="denied__wrapper">
     <h1>404</h1>
+    <a href="{% url 'UserPages:index' %}"><button class="denied__link">Go Home</button></a>
     <h3>LOST IN <span>SPACE</span> Journaling? Hmm, looks like that page doesn't exist.</h3>
     <img id="astronaut" src="{% static 'UserPages/images/astronaut.svg' %}" />
     <img id="planet" src="{% static 'UserPages/images/planet.svg' %}" />
-    <a href="{% url 'UserPages:index' %}"><button class="denied__link">Go Home</button></a>
+    
 </div>
 
 <script type="text/javascript"

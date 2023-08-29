@@ -47,10 +47,23 @@ def get_random_quote():
 # Create your views here.
 
 
-@login_required(login_url="../../UserPages/login/")
+@login_required(login_url=reverse_lazy('UserPages:login'))
 def index(request):
+    order = request.GET.get('order', 'desc')  # Default to descending order
 
-    posts = UserContent.objects.filter(author=request.user)
+    posts = UserContent.objects.filter(author=request.user).order_by('-created_at')
+    
+    # Apply filters if provided
+    postFilter = EntryFilter(request.GET, queryset=posts)
+    posts = postFilter.qs
+
+    # Apply ordering based on the selected order
+    order = request.GET.get('order', 'desc')  # Default to descending order
+
+    if order == 'asc':
+        posts = posts.order_by('created_at')
+    else:
+        posts = posts.order_by('-created_at')
 
     if request.method == 'POST':
         post_id = request.POST.get("post-id")
@@ -72,8 +85,8 @@ def index(request):
                     group.user_set.remove(user)
                 except:
                     pass
-    postFilter = EntryFilter(request.GET, queryset=posts)
-    posts = postFilter.qs
+    # postFilter = EntryFilter(request.GET, queryset=posts)
+    # posts = postFilter.qs
 
     # Initialize the paginator
     paginator = Paginator(posts, 3)  # Show 3 posts per page
@@ -98,10 +111,28 @@ def index(request):
     context.update({'posts': posts, 'postFilter': postFilter, 'page_obj': page_obj})
     return render(request, 'UserPages/index.html', context)
 
-@login_required(login_url="../../UserPages/login")
-@permission_required("UserPages.delete_usercontent", login_url="../../UserPages/login", raise_exception=True)
+@login_required(login_url=reverse_lazy('UserPages:login'))  # Use the appropriate URL name for the login page
+@permission_required("UserPages.delete_usercontent", login_url=reverse_lazy('UserPages:login'), raise_exception=True)
 def mod(request):
-    posts = UserContent.objects.all()
+    order = request.GET.get('order', 'desc')  # Default to descending order
+    posts = UserContent.objects.all().order_by('-created_at')
+
+    
+    # Apply filters if provided
+    postFilter = EntryFilter(request.GET, queryset=posts)
+    posts = postFilter.qs
+
+    # Apply ordering based on the selected order
+    order = request.GET.get('order', 'desc')  # Default to descending order
+
+    if order == 'asc':
+        posts = posts.order_by('created_at')
+    else:
+        posts = posts.order_by('-created_at')
+
+
+
+
 
     if request.method == 'POST':
         post_id = request.POST.get("post-id")
@@ -124,16 +155,16 @@ def mod(request):
                 except:
                     pass
     
-    postFilter = ModEntryFilter(request.GET, queryset=posts)
-    posts = postFilter.qs
+    # postFilter = ModEntryFilter(request.GET, queryset=posts)
+    # posts = postFilter.qs
 
-        # Initialize the paginator
-    paginator = Paginator(posts, 2)  # Show 3 posts per page
+    # Initialize the paginator
+    paginator = Paginator(posts, 3)  # Show 3 posts per page
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
-    context = {'posts': posts, 'postFilter' : postFilter, 'page_obj': page_obj }
+    context = {'posts': page_obj, 'postFilter': postFilter, 'page_obj': page_obj}
     return render(request, 'UserPages/mod.html', context)
 
 
@@ -214,6 +245,9 @@ def custom_404(request, exception):
 
 def custom_403(request, exception):
     return render(request, 'UserPages/403.html', status=403)
+
+def custom_500(request):
+    return render(request, 'UserPages/500.html', status=500)
 
 
 

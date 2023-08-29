@@ -1,4 +1,5 @@
 
+
 <div class="dropdown">
   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
   Search
@@ -13,11 +14,22 @@
 
   </li>
   </ul>
+  
+    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+    Entries Order
+    </button>
+    <ul class="dropdown-menu p-3 m-2" aria-labelledby="dropdownMenuButton1">
+    
+      <li><a class="dropdown-item" href="{% url 'UserPages:index' %}?order=desc{% if request.GET.author %}&author={{ request.GET.author }}{% endif %}">Order Ascending</a></li>
+      <li><a class="dropdown-item" href="{% url 'UserPages:index' %}?order=asc{% if request.GET.author %}&author={{ request.GET.author }}{% endif %}">Order Descending</a></li>
+     
+    </ul>
+  
 </div>
 
 <div class="card mt-2">
   <div class="card-header">
-  Inspirational  Quote<small> | generated at: <a href="https://zenquotes.io/api/random">zenquotes.io</a></small> 
+  <strong>Inspirational  Quote</strong> <small> | generated at: <a href="https://zenquotes.io/api/random">zenquotes.io</a></small> 
   </div>
   <div class="card-body">
     <blockquote class="blockquote mb-0">
@@ -30,7 +42,7 @@
 
 
 
-{% for post in posts %}
+{% for post in page_obj %}
 
 
 
@@ -48,11 +60,11 @@
          
     </div>
     <div>
-      
+      <a class="btn btn-info m-2 px-3"  href="{% url 'UserPages:update_entry' post.id %}">Edit</a><br>
        <form method="post">
           {% csrf_token %}
-          <a class="btn btn-dark" href="{% url 'UserPages:update_entry' post.id %}">Edit Entry</a><br>
-          <button type = "submit" class="btn btn-danger m-2" name = "post-id" value="{{post.id}}">Delete</button>
+          
+          <button type = "submit"  class="btn btn-danger m-2" name = "post-id" value="{{post.id}}">Delete</button>
           
         </form>
       
@@ -71,21 +83,60 @@
 
 <a href="{% url 'UserPages:create-entry' %}" class="btn btn-success m-2">Add Entry</a></li>
 
-
-<div class="pagination">
-  <span class="step-links">
+{% if page_obj.paginator.num_pages > 1 %}
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
       {% if page_obj.has_previous %}
-          <a href="?page=1">&laquo; first</a>
-          <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        <li class="page-item">
+          <a class="page-link" href="?page=1" aria-label="First">
+            <span aria-hidden="true">&laquo;&laquo;</span>
+            <span class="sr-only">First</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li>
       {% endif %}
 
-      <span class="current">
-          Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-      </span>
+      {% for i in page_obj.paginator.page_range %}
+        <li class="page-item{% if i == page_obj.number %} active{% endif %}">
+          <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+        </li>
+      {% endfor %}
 
       {% if page_obj.has_next %}
-          <a href="?page={{ page_obj.next_page_number }}">next</a>
-          <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+            <span aria-hidden="true">&raquo;&raquo;</span>
+            <span class="sr-only">Last</span>
+          </a>
+        </li>
       {% endif %}
-  </span>
-</div>
+    </ul>
+  </nav>
+{% else %}
+<nav aria-label="Page navigation example">
+  <div class="pagination">
+    <ul class="pagination"><li class="page-item">
+      <span class="page-link">
+      Page
+      </span>
+    </li>
+    <li class="page-item">
+      <span class="page-link">
+     1 of 1
+      </span>
+    </li>
+  </ul>
+    </div>
+</nav>
+{% endif %}

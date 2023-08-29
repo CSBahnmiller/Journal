@@ -1,4 +1,17 @@
-{% extends "UserPages/layout.html" %}
+{% extends 'UserPages/layout.html' %}
+{% load static %}
+{% block headtag %} 
+<style>
+  body{
+    background-image: url("{% static 'UserPages/images/space.gif' %}");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  </style>
+{% endblock %}
+{% block title_block%} 403 {% endblock %}
+<link type="text/css" rel="stylesheet" href="{% static 'UserPages/css/main.css' %}" />
+{% block bodytag %}class = "permission_denied" {% endblock %}
 
 {% block body %}
 <h1>Journal entries!!!</h1>

@@ -1,5 +1,14 @@
 {% extends "UserPages/layout.html" %}
-
+{% load static %}
+{% block headtag %} 
+<style>
+  body{
+    background-image: url("{% static 'UserPages/images/space.gif' %}");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  </style>
+{% endblock %}
 {% block body %}
 <a href="{% url 'UserPages:index' %}">Journal</a>
 {% endblock %}
