@@ -10,5 +10,16 @@
   </style>
 {% endblock %}
 {% block body %}
-<a href="{% url 'UserPages:index' %}">Journal</a>
+<div class="d-flex justify-content-md-center align-items-center vh-100 ">
+  <div class="card ">
+    <div class="card-header text-dark bg-opacity-10">
+      Journal 
+    </div>
+    <div class="card-body text-dark bg-opacity-10">
+      <h5 class="card-title">Online Journal Project</h5>
+      <p class="card-text">Welcome to your online journal sanctuary. <br> Dive into introspection, record your thoughts, and explore your journey. <br> This digital haven is where you can chronicle your experiences, <br> reflect on moments, and nurture your personal growth.</p>
+      <p class="card-text">Engage with your thoughts, track your progress, and find solace in self-expression. <br> Whether you're capturing milestones, emotions, or simply the beauty of everyday life, <br> your personal journaling website is here to accompany you on this meaningful exploration.</p>
+      <a href="{% url 'UserPages:index' %}" class="btn btn-primary">Launch Journal App</a>
+    </div>
+  </div
 {% endblock %}
