@@ -5,6 +5,7 @@
   body{
     background-image: url("{% static 'UserPages/images/space.gif' %}");
     background-repeat: no-repeat;
+    background-attachment: fixed;
     background-size: cover;
   }
   </style>
@@ -52,9 +53,9 @@
     <div>
       <h5 class="card-title"></h5>
       {% if post.graditude %}
-      <p><strong>Being Greatful for:</strong> {{post.graditude}}</p>
+      <p><strong>Being Greatful for:</strong> {{post.graditude|safe}}</p>
       {% endif %}
-      <p><strong>Journal Entry: </strong> {{post.content}}</p>
+      <p><strong>Journal Entry: </strong> {{post.content|safe}}</p>
          
     </div>
     <div>

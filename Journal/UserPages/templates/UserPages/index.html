@@ -1,16 +1,21 @@
 {% extends 'UserPages/layout.html' %}
 {% load static %}
 {% block headtag %} 
+<!--link type="text/css" rel="stylesheet" href=" UserPages/css/main.css" /-->
 <style>
   body{
     background-image: url("{% static 'UserPages/images/space.gif' %}");
     background-repeat: no-repeat;
+    background-attachment: fixed;
     background-size: cover;
   }
+  .content_image{
+  max-width: 250px;
+}
   </style>
 {% endblock %}
 {% block title_block%} 403 {% endblock %}
-<link type="text/css" rel="stylesheet" href="{% static 'UserPages/css/main.css' %}" />
+
 {% block bodytag %}class = "permission_denied" {% endblock %}
 
 {% block body %}

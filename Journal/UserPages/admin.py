@@ -3,4 +3,9 @@ from .models import UserContent, User
 
 # Register your models here.
 #admin.site.register(User)
-admin.site.register(UserContent)
+
+class UserContentAdmin(admin.ModelAdmin):
+  readonly_fields = ('id',)
+
+
+admin.site.register(UserContent, UserContentAdmin)

@@ -17,7 +17,7 @@ class RegisterForm(UserCreationForm):
 class UserContentForm(forms.ModelForm):
     class Meta:
         model = UserContent
-        fields = ["title", "mood", "feeling", "graditude",  "content"] 
+        fields = ["title", "mood", "feeling", "graditude",  "content", "content_image"] 
 
 
 class PasswordChangingFrom(PasswordChangeForm):

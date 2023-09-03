@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import login, logout, authenticate, views as auth_views
@@ -119,7 +120,7 @@ def mod(request):
 
     
     # Apply filters if provided
-    postFilter = EntryFilter(request.GET, queryset=posts)
+    postFilter = ModEntryFilter(request.GET, queryset=posts)
     posts = postFilter.qs
 
     # Apply ordering based on the selected order
@@ -166,6 +167,7 @@ def mod(request):
     
     context = {'posts': page_obj, 'postFilter': postFilter, 'page_obj': page_obj}
     return render(request, 'UserPages/mod.html', context)
+
 
 
 

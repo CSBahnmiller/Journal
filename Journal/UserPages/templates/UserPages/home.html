@@ -52,12 +52,14 @@
     <div>
       <h5 class="card-title"></h5>
       {% if post.graditude %}
-      <p><strong>Being Greatful for:</strong> {{post.graditude}}</p>
+      <p><strong>Being Greatful for:</strong> {{post.graditude|safe}}</p>
       <hr>
       {% endif %}
       
-      <p><strong>Journal Entry: </strong> {{post.content}}</p>
-         
+      <p><strong>Journal Entry: </strong> {{post.content|safe}}</p>
+      {% if post.content_image %}
+    <img src="../media/{{ post.content_image }} " alt="{{ post.content_image }} " class = "content_image">
+      {% endif %}
     </div>
     <div>
       <a class="btn btn-info m-2 px-3"  href="{% url 'UserPages:update_entry' post.id %}">Edit</a><br>

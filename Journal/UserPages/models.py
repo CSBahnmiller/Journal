@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from ckeditor.fields import RichTextField
 
 
 # Create your models here.
@@ -24,8 +25,12 @@ class UserContent(models.Model):
   feeling = models.IntegerField("On a scale 1-10 how strong is your mood:",blank=False,choices=[tuple([x,x]) for x in range(1,11)], default=10)
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
-  graditude = models.TextField(blank=True)
-  content = models.TextField(blank=True)
+  #graditude = models.TextField(blank=True)
+  graditude = RichTextField(blank=True)
+  #content = models.TextField(blank=True)
+  content = RichTextField(blank=True,  null=True)
+  content_image = models.ImageField(null=True, blank=True, upload_to="images/")
+
 
   def __str__(self):
     return self.title + "\n" + self.content

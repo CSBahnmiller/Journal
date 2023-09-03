@@ -1,9 +1,27 @@
 {% extends 'UserPages/layout.html' %}
+{% load static %}
 {% block title %}Submit entry {% endblock %}
+{% block headtag %}
+<style>
+  body{
+    background-image: url("{% static 'UserPages/images/space.gif' %}");
+    background-color: darkblue;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: lightgray;
+  }
+    
+
+  </style>
+  {% endblock %}
 {% load crispy_forms_tags %}
 {% block body %}
-<form method="post">
-{% csrf_token %}{{form|crispy}}
+<form method="post" enctype="multipart/form-data">
+{% csrf_token %}
+{{form.media}}
+{{form|crispy}}
+
+
 <button type="submit" class="btn btn-success">Post</button>
 </form>
 {% endblock %}

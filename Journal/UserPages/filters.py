@@ -32,7 +32,7 @@ class EntryFilter(django_filters.FilterSet):
     class Meta:
         model = UserContent
         fields='__all__'
-        exclude = ['author', 'mood','feeling', 'title', 'content', 'created_at', 'updated_at', 'graditude']
+        exclude = ['author', 'mood','feeling', 'title', 'content', 'created_at', 'updated_at', 'graditude', 'content_image']
 
 class ModEntryFilter(django_filters.FilterSet):
     body_text = CharFilter(field_name="title", label='title', lookup_expr='icontains')
@@ -43,4 +43,4 @@ class ModEntryFilter(django_filters.FilterSet):
     class Meta:
         model = UserContent
         fields='__all__'
-        exclude = [ 'mood','feeling', 'title', 'content', 'created_at', 'updated_at', 'graditude']
+        exclude = [ 'mood','feeling', 'title', 'content', 'created_at', 'updated_at', 'graditude', 'content_image']

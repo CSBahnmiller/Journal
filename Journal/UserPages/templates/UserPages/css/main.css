@@ -2,3 +2,7 @@ html{
   background-color: darkblue;
   font: white;
 }
+
+.content_image{
+  width : 50px;
+}
