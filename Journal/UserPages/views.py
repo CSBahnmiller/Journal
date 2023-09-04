@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import login, logout, authenticate, views as auth_views
 from django.contrib.auth.views import PasswordChangeView, LoginView
 from django.contrib.auth.forms import PasswordChangeForm
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy, resolve
 from .forms import RegisterForm, UserContentForm, PasswordChangingFrom, LoginForm
 from django.contrib.auth.models import User, Group
 from .models import UserContent
@@ -171,7 +171,6 @@ def mod(request):
 
 
 
-
 def sign_up(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
@@ -194,34 +193,56 @@ def logout_request(request):
 def create_entry(request):
     if request.method == 'POST':
         
-        form = UserContentForm(request.POST)
+        form = UserContentForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
             post.save()
-            return redirect('../../UserPages/')
+            
+            return redirect(reverse_lazy('UserPages:index'))
     else:
         form = UserContentForm()
     return render(request, 'UserPages/create-entry.html', {"form" : form})
 
 
-@login_required(login_url="../../UserPages/login")
-@permission_required("UserPages.add_usercontent", login_url="../../UserPages/login", raise_exception=True)
+@login_required(login_url=reverse_lazy('UserPages:login'))
+@permission_required("UserPages.add_usercontent", login_url=reverse_lazy('UserPages:login'), raise_exception=True)
 def edit_entry(request, pk):
 
     entry = UserContent.objects.get(id=pk)
     form = UserContentForm(instance=entry)
 
     if request.method == 'POST':
-        form = UserContentForm(request.POST, instance=entry)
+        form = UserContentForm(request.POST, request.FILES, instance=entry)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
             post.save()
-            return redirect('../../../UserPages/') 
+            
+            return redirect(reverse_lazy('UserPages:index')) 
     
     context = {'form':form}
     return render(request,'UserPages/edit-entry.html', context) 
+
+
+
+@login_required(login_url=reverse_lazy('UserPages:login'))  # Use the appropriate URL name for the login page
+@permission_required("UserPages.delete_usercontent", login_url=reverse_lazy('UserPages:login'), raise_exception=True)
+def delete_post(request, pk1, pk2):
+
+    entry = UserContent.objects.get(id=pk1)
+    entry.delete()
+    if pk2 == 1:
+        return redirect('UserPages:index')
+    elif pk2 == 2:
+        return redirect('UserPages:mod')
+    else:
+        return redirect('Main:home')
+    
+   
+
+
+
 
 
 class PasswordsChangeView(PasswordChangeView):

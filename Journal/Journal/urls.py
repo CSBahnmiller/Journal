@@ -25,7 +25,7 @@ app_name = "Main"
 urlpatterns = [
     path("", include("home.urls"), name='home'),
     path("UserPages/", include("UserPages.urls")),
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name="admin"),
     re_path(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
   

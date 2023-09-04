@@ -63,12 +63,8 @@
     </div>
     <div>
       <a class="btn btn-info m-2 px-3"  href="{% url 'UserPages:update_entry' post.id %}">Edit</a><br>
-       <form method="post">
-          {% csrf_token %}
-          
-          <button type = "submit"  class="btn btn-danger m-2" name = "post-id" value="{{post.id}}">Delete</button>
-          
-        </form>
+      <a class="btn btn-danger m-2"  href="{% url 'UserPages:delete_entry' post.id 1 %}">Delete</a><br>
+
       
 
     </div>

@@ -23,7 +23,7 @@ urlpatterns = [
     path('mod/', views.mod, name='mod'),
     path('edit-entry/<str:pk>/', views.edit_entry, name = 'update_entry'),
     path('404/', views.error404, name = 'error'),
-
+    path('<int:pk1>/<int:pk2>/delete_entry',views.delete_post, name='delete_entry'),
         
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
