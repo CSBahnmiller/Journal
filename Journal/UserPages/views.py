@@ -268,6 +268,26 @@ def edit_entry(request, pk):
     return render(request,'UserPages/edit-entry.html', context) 
 
 
+@login_required(login_url=reverse_lazy('UserPages:login'))
+@permission_required("UserPages.add_usercontent", login_url=reverse_lazy('UserPages:login'), raise_exception=True)
+def edit_comment(request, pk):
+
+    entry = Comments.objects.get(id=pk)
+    form = CommentContentForm(instance=entry)
+
+    if request.method == 'POST':
+        form = CommentContentForm(request.POST, request.FILES, instance=entry)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            
+            return redirect(reverse_lazy('UserPages:index')) 
+    
+    context = {'form':form}
+    return render(request,'UserPages/edit-comment.html', context) 
+
+
 
 @login_required(login_url=reverse_lazy('UserPages:login'))  # Use the appropriate URL name for the login page
 @permission_required("UserPages.delete_usercontent", login_url=reverse_lazy('UserPages:login'), raise_exception=True)

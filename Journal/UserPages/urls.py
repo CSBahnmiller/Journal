@@ -24,6 +24,7 @@ urlpatterns = [
     path('post/<int:pk>/', views.post_detail, name='post_detail'),
     path('mod/', views.mod, name='mod'),
     path('edit-entry/<str:pk>/', views.edit_entry, name = 'update_entry'),
+    path('edit-comment/<int:pk>/', views.edit_comment, name = 'update_comment'),
     path('404/', views.error404, name = 'error'),
     path('<int:pk1>/<int:pk2>/delete_entry',views.delete_post, name='delete_entry'),
     path('<int:pk1>/<int:pk2>/delete_comment',views.delete_comment, name='delete_comment'),

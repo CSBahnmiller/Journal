@@ -59,14 +59,17 @@
       {% endif %}
       
       <!-- Comments Section -->
-      <h6>Comments</h6>
+      <div class="p-3 mb-2 bg-secondary text-white rounded text-center"><h6>Comments</h6></div>
+      
       {% for comment in post.comments.all %}
         <div class="card mt-2">
           <div class="card-header">
-            <strong>{{ comment.user.username }} - {{ comment.date_added }} <a href="{% url 'UserPages:delete_comment' comment.id 1 %}" title="Delete Comment">(&times;)</a> </strong>
+            <strong>{{ comment.user.username }} - {{ comment.date_added }}</strong> | <a href="{% url 'UserPages:update_comment' comment.id %}">(edit)</a> <div class="position-absolute top-0 end-0"><a href="{% url 'UserPages:delete_comment' comment.id 1 %}" title="Delete Comment" class="btn btn-danger">&times;</a></div> 
           </div>
           <div class="card-body">
-            {{ comment.body | safe }}
+            {{ comment.body | safe }} 
+            
+            
           </div>
         </div>
       {% empty %}
