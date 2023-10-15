@@ -20,10 +20,13 @@ urlpatterns = [
     path('logout/', views.logout_request, name='logout'),
     path('sign-up/', views.sign_up, name = "sign_up"),
     path('create-entry/', views.create_entry, name = 'create-entry'),
+    path('comment/<int:pk>/', views.create_comment, name = 'add_comment'),
+    path('post/<int:pk>/', views.post_detail, name='post_detail'),
     path('mod/', views.mod, name='mod'),
     path('edit-entry/<str:pk>/', views.edit_entry, name = 'update_entry'),
     path('404/', views.error404, name = 'error'),
     path('<int:pk1>/<int:pk2>/delete_entry',views.delete_post, name='delete_entry'),
+    path('<int:pk1>/<int:pk2>/delete_comment',views.delete_comment, name='delete_comment'),
         
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

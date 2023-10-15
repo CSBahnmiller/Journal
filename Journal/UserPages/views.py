@@ -1,13 +1,13 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import login, logout, authenticate, views as auth_views
 from django.contrib.auth.views import PasswordChangeView, LoginView
 from django.contrib.auth.forms import PasswordChangeForm
 from django.urls import reverse, reverse_lazy, resolve
-from .forms import RegisterForm, UserContentForm, PasswordChangingFrom, LoginForm
+from .forms import RegisterForm, UserContentForm, CommentContentForm, PasswordChangingFrom, LoginForm
 from django.contrib.auth.models import User, Group
-from .models import UserContent
+from .models import UserContent, Comments
 from .filters import EntryFilter, ModEntryFilter
 import requests
 
@@ -86,8 +86,6 @@ def index(request):
                     group.user_set.remove(user)
                 except:
                     pass
-    # postFilter = EntryFilter(request.GET, queryset=posts)
-    # posts = postFilter.qs
 
     # Initialize the paginator
     paginator = Paginator(posts, 3)  # Show 3 posts per page
@@ -106,11 +104,33 @@ def index(request):
         context["quote"] = quote
         context["author"] = author
         context["html_quote"] = html_quote
-
-
 #End of API Quote
-    context.update({'posts': posts, 'postFilter': postFilter, 'page_obj': page_obj})
+
+    comment_forms = {}  # Create a dictionary to hold comment forms for each post
+
+    for post in posts:
+        if request.method == 'POST':
+            form = CommentContentForm(request.POST)  # Create a comment form instance for each post
+            if form.is_valid():
+                comment = form.save(commit=False)
+                comment.user = request.user
+                comment.post = post  # Assign the comment to the post
+                comment.save()
+        else:
+            form = CommentContentForm()  # Create an empty comment form
+
+        comment_forms[post.id] = form  # Store the form in the dictionary with the post's ID as the key
+
+
+    context.update({'posts': posts, 'postFilter': postFilter, 'page_obj':page_obj, 'comment_forms': comment_forms, 'form': form })
     return render(request, 'UserPages/index.html', context)
+
+
+
+
+
+
+
 
 @login_required(login_url=reverse_lazy('UserPages:login'))  # Use the appropriate URL name for the login page
 @permission_required("UserPages.delete_usercontent", login_url=reverse_lazy('UserPages:login'), raise_exception=True)
@@ -177,7 +197,8 @@ def sign_up(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('../../UserPages/')
+            return redirect(reverse_lazy("UserPages:index"))
+            #return redirect('../../UserPages/')
     else:
         form = RegisterForm()
     return render(request, 'registration/sign_up.html', {"form": form})
@@ -203,6 +224,28 @@ def create_entry(request):
     else:
         form = UserContentForm()
     return render(request, 'UserPages/create-entry.html', {"form" : form})
+
+
+
+@login_required(login_url="../../UserPages/login")
+@permission_required("UserPages.add_usercontent", login_url="../../UserPages/login", raise_exception=True)
+def create_comment(request, pk):
+    post = UserContent.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        form = CommentContentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.post = post  # Assign the comment to the post
+            comment.save()
+            return redirect('UserPages:index')
+
+    return render(request, 'UserPages/post_detail.html', {'form': form, 'post': post})
+
+def post_detail(request, pk):
+    post = get_object_or_404(UserContent, pk=pk)
+    return render(request, 'UserPages/post_detail.html', {'post': post})
 
 
 @login_required(login_url=reverse_lazy('UserPages:login'))
@@ -241,7 +284,18 @@ def delete_post(request, pk1, pk2):
     
    
 
+@login_required(login_url=reverse_lazy('UserPages:login'))  # Use the appropriate URL name for the login page
+@permission_required("UserPages.delete_usercontent", login_url=reverse_lazy('UserPages:login'), raise_exception=True)
+def delete_comment(request, pk1, pk2):
 
+    comment = Comments.objects.get(id=pk1)
+    comment.delete()
+    if pk2 == 1:
+        return redirect('UserPages:index')
+    elif pk2 == 2:
+        return redirect('UserPages:mod')
+    else:
+        return redirect('Main:home')
 
 
 

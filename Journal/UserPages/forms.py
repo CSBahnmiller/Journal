@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, AuthenticationForm
 from django.contrib.auth.models import User
-from .models import UserContent
+from .models import UserContent, Comments
 
 
 
@@ -17,7 +17,13 @@ class RegisterForm(UserCreationForm):
 class UserContentForm(forms.ModelForm):
     class Meta:
         model = UserContent
-        fields = ["title", "mood", "feeling", "graditude",  "content", "content_image"] 
+        fields = ["title", "mood", "feeling", "graditude",  "content", "content_image"]
+
+class CommentContentForm(forms.ModelForm):
+    class Meta:
+        model = Comments
+        fields = ["body"]
+        labels = {"body" : "Comment"}
 
 
 class PasswordChangingFrom(PasswordChangeForm):
@@ -28,7 +34,7 @@ class PasswordChangingFrom(PasswordChangeForm):
     class Meta:
         model = User
         fields = ("old_password","new_password1","new_password2")
-
+        
 class LoginForm(AuthenticationForm):
     username = forms.CharField()
     password = forms.CharField(max_length=100, widget=forms.PasswordInput(attrs={'class':'form-control', 'type':'password'}))

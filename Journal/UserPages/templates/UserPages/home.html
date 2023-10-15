@@ -1,5 +1,5 @@
 
-
+{% load crispy_forms_tags %}
 <div class="dropdown">
   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
   Search
@@ -9,9 +9,9 @@
 
     <form method="get">
       {{postFilter.form}} <br><br>
-      <div class="form-row text-right">
+      <form class="form-row text-right">
       <button class="btn btn-primary" type="submit">Search</button>
-
+      </form>
   </li>
   </ul>
   
@@ -41,43 +41,60 @@
 </div>
 
 
-
+<!---------Posts------------------->
 {% for post in page_obj %}
-
-
-
 <div class="card mt-2">
   <div class="card-header"><strong>{{post.title}}</strong></div>
   <div class="card-body d-flex flex-row justify-content-between">
     <div>
       <h5 class="card-title"></h5>
       {% if post.graditude %}
-      <p><strong>Being Greatful for:</strong> {{post.graditude|safe}}</p>
-      <hr>
+        <p><strong>Being Grateful for:</strong> {{post.graditude|safe}}</p>
+        <hr>
       {% endif %}
       
       <p><strong>Journal Entry: </strong> {{post.content|safe}}</p>
       {% if post.content_image %}
-    <img src="../media/{{ post.content_image }} " alt="{{ post.content_image }} " class = "content_image">
+        <img src="{{ post.content_image.url }}" alt="{{ post.content_image }}" class="content_image">
       {% endif %}
+      
+      <!-- Comments Section -->
+      <h6>Comments</h6>
+      {% for comment in post.comments.all %}
+        <div class="card mt-2">
+          <div class="card-header">
+            <strong>{{ comment.user.username }} - {{ comment.date_added }} <a href="{% url 'UserPages:delete_comment' comment.id 1 %}" title="Delete Comment">(&times;)</a> </strong>
+          </div>
+          <div class="card-body">
+            {{ comment.body | safe }}
+          </div>
+        </div>
+      {% empty %}
+        <p>No comments yet.</p>
+      {% endfor %}
+     
+      <form method="post" action="{% url 'UserPages:add_comment' post.id %}">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success">Add Comment</button>
+    </form>
+      <!-- Comment Section End -->
     </div>
     <div>
       <a class="btn btn-info m-2 px-3"  href="{% url 'UserPages:update_entry' post.id %}">Edit</a><br>
       <a class="btn btn-danger m-2"  href="{% url 'UserPages:delete_entry' post.id 1 %}">Delete</a><br>
-
-      
-
     </div>
-  </div>
+  </div> 
   <div class="card-footer text-muted"><strong><b>@{{ post.author.username }}</b></strong> | <b>Created:</b> {{post.created_at}} {% if post.updated_at != post.created_at %}| <b>Updated:</b> {{post.updated_at}}  {% endif %}| <b>Feeling:</b> {{post.mood}}, {{post.feeling}} / 10</div>
 </div>
-
-
-
 {% empty %}
-<p>No post Yet!</p>
-
+<p>No posts yet!</p>
 {% endfor %}
+
+<!--------------End Posts----------------------------->
+
+
+
 
 <a href="{% url 'UserPages:create-entry' %}" class="btn btn-success m-2">Add Entry</a></li>
 

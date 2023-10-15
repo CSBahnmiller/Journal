@@ -35,4 +35,11 @@ class UserContent(models.Model):
   def __str__(self):
     return self.title + "\n" + self.content
   
-  
+class Comments(models.Model):
+    post = models.ForeignKey(UserContent, related_name="comments", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default='admin')
+    body = models.TextField()
+    date_added = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.post.title} - {self.user.username}'
