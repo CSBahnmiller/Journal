@@ -7,7 +7,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.urls import reverse, reverse_lazy, resolve
 from .forms import RegisterForm, UserContentForm, CommentContentForm, PasswordChangingFrom, LoginForm
 from django.contrib.auth.models import User, Group
-from .models import UserContent, Comments
+from .models import UserContent, Comments, SharedPost
 from .filters import EntryFilter, ModEntryFilter
 import requests
 
@@ -125,8 +125,12 @@ def index(request):
     context.update({'posts': posts, 'postFilter': postFilter, 'page_obj':page_obj, 'comment_forms': comment_forms, 'form': form })
     return render(request, 'UserPages/index.html', context)
 
-
-
+@login_required(login_url=reverse_lazy('UserPages:login'))
+def shared_posts(request):
+    shared_posts = SharedPost.objects.filter(recipient=request.user)
+    form = CommentContentForm()  # Create an empty comment form for shared posts
+    context = {'shared_posts': shared_posts, 'form': form}
+    return render(request, 'UserPages/shared_posts.html', context)
 
 
 

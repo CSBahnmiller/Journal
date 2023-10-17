@@ -64,7 +64,7 @@
       {% for comment in post.comments.all %}
         <div class="card mt-2">
           <div class="card-header">
-            <strong>{{ comment.user.username }} - {{ comment.date_added }}</strong> | <a href="{% url 'UserPages:update_comment' comment.id %}">(edit)</a> <div class="position-absolute top-0 end-0"><a href="{% url 'UserPages:delete_comment' comment.id 1 %}" title="Delete Comment" class="btn btn-danger">&times;</a></div> 
+            <strong>{{ comment.user.username }} - {{ comment.date_added }}</strong> | <a href="{% url 'UserPages:update_comment' comment.id %}" class="m-4">(edit)</a> <div class="position-absolute top-0 end-0"><a href="{% url 'UserPages:delete_comment' comment.id 1 %}" title="Delete Comment" class="btn btn-danger">&times;</a></div> 
           </div>
           <div class="card-body">
             {{ comment.body | safe }} 

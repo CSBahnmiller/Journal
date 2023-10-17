@@ -35,8 +35,15 @@ class UserContent(models.Model):
   def __str__(self):
     return self.title + "\n" + self.content
   
+class SharedPost(models.Model):
+    original_post = models.ForeignKey(UserContent, on_delete=models.CASCADE)
+    recipient = models.ForeignKey(User, on_delete=models.CASCADE)  # Recipient can be a counselor
+    comments = models.ManyToManyField('Comments', blank=True, related_name='shared_posts_comments')
+
+
 class Comments(models.Model):
     post = models.ForeignKey(UserContent, related_name="comments", on_delete=models.CASCADE)
+    shared_post = models.ForeignKey(SharedPost, related_name="shared_comments", on_delete=models.CASCADE, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default='admin')
     body = models.TextField()
     date_added = models.DateTimeField(auto_now=True)
