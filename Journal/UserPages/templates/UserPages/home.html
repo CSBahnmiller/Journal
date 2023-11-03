@@ -42,6 +42,8 @@
 
 
 <!---------Posts------------------->
+{% if page_obj%}
+
 {% for post in page_obj %}
 <div class="card mt-2">
   <div class="card-header"><strong>{{post.title}}</strong></div>
@@ -94,6 +96,30 @@
 <p>No posts yet!</p>
 {% endfor %}
 
+{% else %}
+<div class="card mt-2">
+  <div class="card-header"><strong>No entry, <a href="{% url 'UserPages:create-entry' %}">Add Journal Entry</a></strong></div>
+  <div class="card-body d-flex flex-row justify-content-between">
+    <div>
+      <h2> No Entries yet. <a href="{% url 'UserPages:create-entry' %}">Add Journal Entry</a></h2>
+     
+    </div>
+
+  </div> 
+  <div class="card-footer text-muted"><div class="card mt-2">
+  <div class="card-header"><strong>No entry, <a href="{% url 'UserPages:create-entry' %}">Add Journal Entry</a></strong></div>
+  <div class="card-body d-flex flex-row justify-content-between">
+    <div>
+      <h2> No Entries yet. <a href="{% url 'UserPages:create-entry' %}">Add Journal Entry</a></h2>
+     
+    </div>
+
+  </div> 
+  <div class="card-footer text-muted"></div>
+</div><a href="{% url 'UserPages:create-entry' %}">Add Journal Entry</a></div>
+</div>
+
+{% endif %}
 <!--------------End Posts----------------------------->
 
 

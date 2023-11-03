@@ -10,6 +10,7 @@ from django.contrib.auth.models import User, Group
 from .models import UserContent, Comments, SharedPost
 from .filters import EntryFilter, ModEntryFilter
 import requests
+import random
 
 
 #Import Pagination Stuff
@@ -18,6 +19,7 @@ from django.core.paginator import Paginator
 
 #Code to grab API Quote
 
+# Code to grab API Quote
 def get_random_quote():
     api_url = "https://zenquotes.io/api/random"
     
@@ -36,10 +38,28 @@ def get_random_quote():
                 "author": author,
                 "html_quote": html_quote
             }
+        else:
+            return {
+                "quote": "Too many requests. Obtain an auth key for unlimited access.",
+                "author": "API Error",
+                "html_quote": ""
+            }
             
     except Exception as e:
         print("An error occurred:", e)
-        return None
+        # Return one of the specified phrases when an error occurs
+        phrases = [
+            "Life is like a box of chocolates, you never know what you are going to get.",
+            "If at first you don't succeed, I don't recommend skydiving.",
+            "If life gives you lemons, sell them and make a profit."
+        ]
+        random_phrase = random.choice(phrases)
+        return {
+            "quote": random_phrase,
+            "author": "Unknown",
+            "html_quote": ""
+        }
+
 
 
 
